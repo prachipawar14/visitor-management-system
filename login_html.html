@@ -1,0 +1,138 @@
+<html>
+<head>
+    <style>
+        body {
+            background-image: url('lg2.jpg');
+            background-size: cover;
+            font-family: Arial, sans-serif;
+        }
+
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.6);
+            max-width: 400px;
+            margin: 100px auto;/*top*/
+            text-align: center;
+        }
+
+        .logo {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        .login-form input {
+            width: 160px;
+            height: 40px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            vertical-align: middle;
+        }
+
+        .login-form button {
+            background-color: rgba(7, 10, 71, 0.9);/*transparency*/
+            color: #fff;
+            padding: 10px 20px;/*height width*/
+            border-radius: 5px;
+			margin:20px 0px;
+        }
+
+        .login-form button:hover {
+            background-color: rgba(117, 0, 117, 0.9);;
+        }
+		
+		.alert {
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}
+		
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <br>
+        <form class="login-form">
+            <h1><u>LOGIN</u></h1>
+            <img class="logo" src="uname.png" style="margin: 10px 20px;">
+			<input type="text" name="username" placeholder="Username" style="margin: -95px 20px;"><br><br>
+            <img class="logo" src="pass.png" style="margin: 10px 20px;">
+            <input type="password" name="password" placeholder="Password" style="margin: -95px 20px;"><br>
+            <button type="submit" onclick="validate()">Login</button>
+        </form>
+    </div>
+
+	<div class="alert">
+  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+  <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
+</div>
+
+
+<?php
+$username=filter_input(INPUT_POST,"username");
+$password=filter_input(INPUT_POST,"password");
+
+function validate()
+{
+if(!empty($username))
+{
+	if(!empty($password))
+	{
+		$conn=new mysqli("localhost","root","","cpp");
+		
+		if(mysqli_connect_error())
+		{
+			die('Connect Error('.mysqli_connect_errno().')'.mysqli_connect_error());
+		}
+		else
+		{
+			$sql="INSERT INTO test (username,password) values ('$username','$password')";
+			
+			if($conn->query($sql))
+			{
+				echo "<script>window.location='http://localhost/CPP/visitors_info_des.php'</script>";
+			}
+			else
+			{
+				echo "Error:".$sql."<br>".$conn->error;
+			}
+			$conn->close();
+			
+		}
+	}
+	else
+	{
+		echo "<script>alert('Password should not be empty')</script>";
+		die();
+	}
+}
+else
+{
+	echo "<script>alert('Password should not be empty')</script>";
+	die();
+}
+
+}
+
+?>
+
+
+</body>
+</html>
